@@ -15,14 +15,6 @@ class LikeCard extends StatefulWidget {
 }
 
 class _LikeCardState extends State<LikeCard> {
-  bool isLiked = false;
-
-  void toggleLike() {
-    setState(() {
-      isLiked = !isLiked;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,14 +54,11 @@ class _LikeCardState extends State<LikeCard> {
               ),
               SizedBox(height: 20),
               ElevatedButton.icon(
-                onPressed: toggleLike,
-                icon: Icon(
-                  isLiked ? Icons.favorite : Icons.favorite_border,
-                  color: isLiked ? Colors.red : Colors.grey,
-                ),
-                label: Text(isLiked ? 'Aimé' : 'Like'),
+                onPressed: () => {},
+                icon: Icon(Icons.favorite_border, color: Colors.grey),
+                label: Text('Like'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: isLiked ? Colors.red[100] : Colors.grey[300],
+                  backgroundColor: Colors.grey[300],
                   foregroundColor: Colors.black,
                 ),
               ),
