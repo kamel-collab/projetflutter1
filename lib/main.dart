@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -15,6 +17,9 @@ class LikeCard extends StatefulWidget {
 }
 
 class _LikeCardState extends State<LikeCard> {
+  bool isLiked = false;
+  String name = 'ok';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,14 +59,23 @@ class _LikeCardState extends State<LikeCard> {
               ),
               SizedBox(height: 20),
               ElevatedButton.icon(
-                onPressed: () => {},
-                icon: Icon(Icons.favorite_border, color: Colors.grey),
+                onPressed: () => {
+                  setState(() {
+                    isLiked = !isLiked;
+                  }),
+                  print(isLiked),
+                },
+                icon: Icon(
+                  isLiked ? Icons.favorite : Icons.favorite_border,
+                  color: isLiked ? Colors.red : Colors.grey,
+                ),
                 label: Text('Like'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.grey[300],
                   foregroundColor: Colors.black,
                 ),
               ),
+              isLiked ? Text("merci") : SizedBox(),
             ],
           ),
         ),
