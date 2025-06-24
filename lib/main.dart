@@ -1,83 +1,45 @@
-import 'dart:isolate';
-
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(home: LikeCard());
-  }
+  State<MyApp> createState() => _MyAppState();
 }
 
-class LikeCard extends StatefulWidget {
-  @override
-  _LikeCardState createState() => _LikeCardState();
-}
-
-class _LikeCardState extends State<LikeCard> {
-  bool isLiked = false;
-  String name = 'ok';
-
+class _MyAppState extends State<MyApp> {
+  bool b = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[100],
-      body: Center(
-        child: Container(
-          padding: EdgeInsets.all(20),
-          margin: EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.shade400,
-                blurRadius: 8,
-                offset: Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CircleAvatar(
-                radius: 40,
-                backgroundImage: NetworkImage(
-                  'https://i.pravatar.cc/150?img=7',
-                ),
-              ),
-              SizedBox(height: 12),
-              Text(
-                'Karim Laidani',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                'Photographe amateur',
-                style: TextStyle(color: Colors.grey[600]),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton.icon(
-                onPressed: () => {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: Text('home')),
+        body: ListView.builder(
+          itemCount: 10,
+          itemBuilder: (BuildContext context, int index) {
+            return Card(
+              margin: EdgeInsets.all(20),
+              child: InkWell(
+                onTap: () {
                   setState(() {
-                    isLiked = !isLiked;
-                  }),
-                  print(isLiked),
+                    b = !b;
+                  });
                 },
-                icon: Icon(
-                  isLiked ? Icons.favorite : Icons.favorite_border,
-                  color: isLiked ? Colors.red : Colors.grey,
-                ),
-                label: Text('Like'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey[300],
-                  foregroundColor: Colors.black,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      Icon(Icons.star, color: b ? Colors.yellow : Colors.grey),
+                      SizedBox(width: 20),
+                      Text("element d'une list"),
+                    ],
+                  ),
                 ),
               ),
-              isLiked ? Text("merci") : SizedBox(),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
