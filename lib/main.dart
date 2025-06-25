@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           // Couleur de fond de l'AppBar
           backgroundColor: Colors.deepOrange,
-
+          centerTitle: true,
           // Style du texte du titre de l'AppBar
           titleTextStyle: TextStyle(
             color: Colors.white,
