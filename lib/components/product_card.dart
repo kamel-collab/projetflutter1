@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({super.key});
+  final String name;
+  final String price;
+  final String imageUrl;
+  final int rating;
+  const ProductCard({
+    super.key,
+    required this.name,
+    required this.price,
+    required this.imageUrl,
+    this.rating = 0,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +33,7 @@ class ProductCard extends StatelessWidget {
               children: [
                 AspectRatio(
                   aspectRatio: 1,
-                  child: Image.network(
-                    'https://d2v5dzhdg4zhx3.cloudfront.net/web-assets/images/storypages/primary/ProductShowcasesampleimages/JPEG/Product+Showcase-1.jpg',
-                    fit: BoxFit.cover,
-                  ),
+                  child: Image.network(imageUrl, fit: BoxFit.cover),
                 ),
                 Positioned(
                   top: 8,
@@ -51,7 +58,7 @@ class ProductCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 12.0, right: 12.0),
               child: Text(
-                "produit 1",
+                name,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -65,7 +72,7 @@ class ProductCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(12.0, 4.0, 12.0, 12.0),
               child: Text(
-                '99.99 €',
+                price,
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,
                   fontSize: 14,
