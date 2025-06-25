@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projet/components/product_card.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -7,7 +8,7 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Ecommerce')),
-      body: Text('data'),
+      body: ProductCard(),
       bottomNavigationBar: buttomNav(),
     );
   }
