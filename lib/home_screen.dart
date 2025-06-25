@@ -1,25 +1,88 @@
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+  final List<Map<String, String>> destinations = [
+    {
+      "city": "Paris",
+      "desc": "La ville lumière",
+      "image":
+          "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=400&q=60",
+    },
+    {
+      "city": "Tokyo",
+      "desc": "La ville futuriste",
+      "image":
+          "https://images.unsplash.com/photo-1549693578-d683be217e58?auto=format&fit=crop&w=400&q=60",
+    },
+    {
+      "city": "Alger",
+      "desc": "La blanche perle",
+      "image":
+          "https://images.unsplash.com/photo-1549693578-d683be217e58?auto=format&fit=crop&w=400&q=60",
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Home')),
-      body: Center(child: Text('Bienveu a home')),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: "settings",
-          ),
-        ],
-        onTap: (index) {
-          if (index == 1) {
-            Navigator.pushNamed(context, '/settings');
-          }
+      appBar: AppBar(
+        title: Text('Destinations'),
+        backgroundColor: Colors.teal,
+        centerTitle: true,
+      ),
+      body: ListView.builder(
+        itemCount: destinations.length,
+        itemBuilder: (context, index) {
+          final dest = destinations[index];
+          return Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, '/detail', arguments: dest);
+              },
+              child: Card(
+                elevation: 6,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(16),
+                      ),
+                      child: Image.network(
+                        dest['image']!,
+                        height: 150,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            dest['city']!,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 6),
+                          Text(
+                            dest['desc']!,
+                            style: TextStyle(color: Colors.grey[700]),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
         },
       ),
     );
