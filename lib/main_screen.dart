@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:projet/components/product_card.dart';
+import 'package:projet/data/get_product_list.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    List productsList = [];
+    fetchProductsFromApi()
+        .then((products) {
+          productsList = products;
+          print(products);
+        })
+        .catchError((error) {
+          print('Erreur lors de la récupération des produits : $error');
+        });
     return Scaffold(
       appBar: AppBar(title: const Text('Ecommerce')),
       body: LayoutBuilder(
@@ -22,13 +32,12 @@ class MainScreen extends StatelessWidget {
               crossAxisSpacing: 8.0,
               childAspectRatio: 0.75,
             ),
-            itemCount: 10,
+            itemCount: productsList.length,
             itemBuilder: (context, index) {
               return ProductCard(
-                name: 'Produit $index',
-                price: '${index * 10 + 99}',
-                imageUrl:
-                    'https://d2v5dzhdg4zhx3.cloudfront.net/web-assets/images/storypages/primary/ProductShowcasesampleimages/JPEG/Product+Showcase-1.jpg',
+                name: productsList[index]['name'],
+                price: productsList[index]['price'],
+                imageUrl: productsList[index]['imageUrl'],
               );
             },
           );
