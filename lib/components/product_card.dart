@@ -59,6 +59,7 @@ class ProductCard extends StatelessWidget {
               padding: const EdgeInsets.only(top: 8.0, left: 12.0, right: 12.0),
               child: Text(
                 name,
+
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,

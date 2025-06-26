@@ -9,13 +9,20 @@
 
 <body>
   <script>
-    const somme = x => x * 2
-
-    console.log(somme(2))
-    landa(function (a, b) {
-      return a + b
-    })
-
+    console.log(1);
+    let data ='je suis le tabmleau'
+    fetch("https://fakestoreapi.in/api/products")
+      .then(res => res.json())
+      .then(res => {
+        
+      console.log(2);
+      
+        data=[res.products]
+        
+      console.log(data);
+      })
+      .catch(err => console.error(err));
+console.log(3);
 
   </script>
 </body>
