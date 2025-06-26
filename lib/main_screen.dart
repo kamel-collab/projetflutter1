@@ -2,56 +2,49 @@ import 'package:flutter/material.dart';
 import 'package:projet/components/product_card.dart';
 import 'package:projet/data/get_product_list.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+class MainScreen extends StatelessWidget {
+  MainScreen({super.key});
 
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
-  List productsList = [];
-  bool refreshing = false;
   @override
   Widget build(BuildContext context) {
-    print('done');
-    fetchProductsFromApi()
-        .then((products) {
-          if (!refreshing) {
-            setState(() {
-              productsList = products;
-            });
-            refreshing = true;
-          }
-        })
-        .catchError((error) {
-          print('Erreur lors de la récupération des produits : $error');
-        });
     return Scaffold(
       appBar: AppBar(title: const Text('Ecommerce')),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          double cardWith = 180;
-          int crossAxisCount = (constraints.maxWidth / cardWith).floor();
-          if (crossAxisCount < 2) {
-            crossAxisCount = 2; // Minimum 2 cards per row
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: fetchProductsFromApi(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
           }
-          if (!refreshing) {
-            return const Center(child: CircularProgressIndicator());
+          if (snapshot.hasError) {
+            return Center(child: Text('Erreur: ${snapshot.error}'));
           }
-          return GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: crossAxisCount,
-              mainAxisSpacing: 8.0,
-              crossAxisSpacing: 8.0,
-              childAspectRatio: 0.75,
-            ),
-            itemCount: productsList.length,
-            itemBuilder: (context, index) {
-              return ProductCard(
-                name: productsList[index]['name'],
-                price: productsList[index]['price'],
-                imageUrl: productsList[index]['imageUrl'],
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text('Aucun produit disponible.'));
+          }
+          final products = snapshot.data!;
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              double cardWith = 180;
+              int crossAxisCount = (constraints.maxWidth / cardWith).floor();
+              if (crossAxisCount < 2) {
+                crossAxisCount = 2; // Minimum 2 cards per row
+              }
+
+              return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                  mainAxisSpacing: 8.0,
+                  crossAxisSpacing: 8.0,
+                  childAspectRatio: 0.66,
+                ),
+                itemCount: products.length,
+                itemBuilder: (context, index) {
+                  return ProductCard(
+                    name: products[index]['name'],
+                    price: products[index]['price'],
+                    imageUrl: products[index]['imageUrl'],
+                  );
+                },
               );
             },
           );
