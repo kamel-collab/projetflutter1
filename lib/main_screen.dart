@@ -2,16 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:projet/components/product_card.dart';
 import 'package:projet/data/get_product_list.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
   @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  List productsList = [];
+  bool refreshing = false;
+  @override
   Widget build(BuildContext context) {
-    List productsList = [];
+    print('done');
     fetchProductsFromApi()
         .then((products) {
-          productsList = products;
-          print(products);
+          if (!refreshing) {
+            setState(() {
+              productsList = products;
+            });
+            refreshing = true;
+          }
         })
         .catchError((error) {
           print('Erreur lors de la récupération des produits : $error');
@@ -24,6 +35,9 @@ class MainScreen extends StatelessWidget {
           int crossAxisCount = (constraints.maxWidth / cardWith).floor();
           if (crossAxisCount < 2) {
             crossAxisCount = 2; // Minimum 2 cards per row
+          }
+          if (!refreshing) {
+            return const Center(child: CircularProgressIndicator());
           }
           return GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
